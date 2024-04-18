@@ -6,14 +6,13 @@ import { Gif, SearchResponse } from '../interfaces/gifs.interfaces';
   providedIn: 'root',
 })
 export class GifsService {
-
-  public gifList: Gif[] = []
+  public gifList: Gif[] = [];
 
   private _tagHistory: string[] = [];
-  private apiKey: string        = 'i2Ta5u4KOQIZMY6D3jYdHxppSgf4smSO';
-  private serviceUrl: string    = 'https://api.giphy.com/v1/gifs';
+  private apiKey: string = 'i2Ta5u4KOQIZMY6D3jYdHxppSgf4smSO';
+  private serviceUrl: string = 'https://api.giphy.com/v1/gifs';
 
-  constructor( private http: HttpClient) {
+  constructor(private http: HttpClient) {
     this.loadLocalstorage();
   }
 
@@ -49,22 +48,30 @@ export class GifsService {
     this.saveLocalStorage();
   }
 
-
-  private saveLocalStorage(): void{
-    localStorage.setItem('history', JSON.stringify(this._tagHistory))
+  private saveLocalStorage(): void {
+    localStorage.setItem('history', JSON.stringify(this._tagHistory));
   }
 
-  private loadLocalstorage(){
-
-
-    if (localStorage.getItem('history') === null || localStorage.getItem('history') === '') {
-      return;
+  /**
+   * Carga el historial desde el almacenamiento local y realiza una búsqueda con el primer elemento del historial si existe.
+   * Si no hay historial almacenado o está vacío, la función termina sin realizar ninguna acción.
+   */
+  private loadLocalstorage(): void {
+    // Verifica si hay historial almacenado en el localStorage y si no está vacío
+    if (
+      localStorage.getItem('history') === null ||
+      localStorage.getItem('history') === ''
+    ) {
+      return; // Termina la función si no hay historial almacenado o está vacío
     }
 
+    // Carga el historial almacenado del localStorage y lo convierte de JSON a objeto
     this._tagHistory = JSON.parse(localStorage.getItem('history')!);
 
-    if(this._tagHistory.length === 0)return;
+    // Verifica si el historial cargado tiene elementos
+    if (this._tagHistory.length === 0) return; // Termina la función si el historial está vacío
 
+    // Realiza una búsqueda utilizando el primer elemento del historial cargado
     this.searchTag(this._tagHistory[0]!);
   }
 
@@ -84,17 +91,14 @@ export class GifsService {
     console.log(this._tagHistory);
 
     const params = new HttpParams()
-    .set('api_key', this.apiKey)
-    .set('q', tag)
-    .set('limit', '10');
+      .set('api_key', this.apiKey)
+      .set('q', tag)
+      .set('limit', '20');
 
-    this.http.get<SearchResponse>(`${this.serviceUrl}/search`, { params })
-    .subscribe( res => {
-      this.gifList = res.data;
-    })
-
+    this.http
+      .get<SearchResponse>(`${this.serviceUrl}/search`, { params })
+      .subscribe((res) => {
+        this.gifList = res.data;
+      });
   }
-
-
-
 }

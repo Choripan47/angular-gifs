@@ -1,21 +1,28 @@
 import { NgModule } from '@angular/core';
+
+import { SharedModule } from '../shared/shared.module';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { HomePageComponent } from './pages/home/home-page.component';
-import { SearchBoxComponent } from './components/search-box/search-box.component';
+
 import { CardListComponent } from './components/card-list/card-list.component';
-import { HttpClientModule} from '@angular/common/http';
+import { CardComponent } from './components/card/card.component';
+import { SearchBoxComponent } from './components/search-box/search-box.component';
+import { HomePageComponent } from './pages/home/home-page.component';
+
 
 
 
 @NgModule({
   declarations: [
+    CardComponent,
+    CardListComponent,
     HomePageComponent,
     SearchBoxComponent,
-    CardListComponent
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    SharedModule
   ],
   exports:[
     HomePageComponent,

@@ -35,5 +35,4 @@ export class SearchBoxComponent{
   }
 
 
-  //create a function what print the tag
 }
